@@ -31,5 +31,19 @@ public class CakeOrder {
     @Column(name="fulfilled_date")
     private Date fulfilledDate;
     
-    // Getters and setters
+    public CakeOrder() {
+
+    }
+
+    public CakeOrder(Long id, Long userId, String cakeFlavour, String allergens, String notes, Long deliveryAddress, Date orderDate, Date deliveryDate, Date fulfilledDate) {
+        this.id = id;
+        this.userId = userId;
+        this.cakeFlavour = cakeFlavour;
+        this.deliveryAddress = deliveryAddress;
+        this.deliveryDate = deliveryDate; 
+        this.orderDate = orderDate;
+        this.fulfilledDate = fulfilledDate;
+        this.allergens = allergens;
+        this.notes = notes;        
+    }
 }
