@@ -18,27 +18,27 @@ public class CakeOrderController {
     CakeOrderRepository cakeOrderRepository;
 
     @GetMapping("/all")
-    public List<CakeOrder> getAllOrders() {
-        return cakeOrderRepository.findAll();
-        // try {
-        //     List<CakeOrder> cakeOrders = new ArrayList<CakeOrder>();
+    public ResponseEntity<List<CakeOrder>> getAllOrders() {
+        try {
+            List<CakeOrder> cakeOrders = new ArrayList<CakeOrder>();
 
 
-        //     cakeOrderRepository.findAll().forEach(cakeOrders::add);
+            cakeOrderRepository.findAll().forEach(cakeOrders::add);
 
-        //     if (cakeOrders.isEmpty()) {
+            if (cakeOrders.isEmpty()) {
                 
-        //         System.out.println("Nothing found");
-        //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        //     }
+                System.out.println("Nothing found");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
 
             
-        //     System.out.println("Success");
-        //     return new ResponseEntity<>(cakeOrders, HttpStatus.OK);
-        // } catch (Exception e) {
-        //     System.out.println(e);
-        //     return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        // }
+            System.out.println(cakeOrders.get(0));
+            System.out.println("Success");
+            return new ResponseEntity<>(cakeOrders, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // @GetMapping("/all")
