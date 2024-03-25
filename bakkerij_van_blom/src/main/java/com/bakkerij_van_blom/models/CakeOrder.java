@@ -8,42 +8,27 @@ import jakarta.persistence.*; // All package required for the entity class
 public class CakeOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    public Long id;
     
     @Column(name="user_id")
-    private Long userId;
+    public Long userId;
     
     @Column(name="cake_flavour")
-    private String cakeFlavour;
+    public String cakeFlavour;
 
-    private String allergens;
-    private String notes;
+    public String allergens;
+    public String notes;
     
     @Column(name="delivery_address")
-    private Long deliveryAddress;
+    public Long deliveryAddress;
 
     @Column(name="order_date")
-    private Date orderDate;
+    public Date orderDate;
     
     @Column(name="delivery_date")
-    private Date deliveryDate;
+    public Date deliveryDate;
     
     @Column(name="fulfilled_date")
-    private Date fulfilledDate;
+    public Date fulfilledDate;
     
-    // public CakeOrder() {
-
-    // }
-
-    // public CakeOrder(Long id, Long userId, String cakeFlavour, String allergens, String notes, Long deliveryAddress, Date orderDate, Date deliveryDate, Date fulfilledDate) {
-    //     this.id = id;
-    //     this.userId = userId;
-    //     this.cakeFlavour = cakeFlavour;
-    //     this.deliveryAddress = deliveryAddress;
-    //     this.deliveryDate = deliveryDate; 
-    //     this.orderDate = orderDate;
-    //     this.fulfilledDate = fulfilledDate;
-    //     this.allergens = allergens;
-    //     this.notes = notes;        
-    // }
 }
