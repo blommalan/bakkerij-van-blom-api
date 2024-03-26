@@ -1,12 +1,16 @@
 package com.bakkerij_van_blom.services;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bakkerij_van_blom.dtos.CakeOrderDto;
+import com.bakkerij_van_blom.exceptions.CannotSaveOrderException;
+import com.bakkerij_van_blom.exceptions.OrderNotFoundException;
 import com.bakkerij_van_blom.models.CakeOrder;
 import com.bakkerij_van_blom.repositories.CakeOrderRepository;
 
@@ -16,25 +20,28 @@ public class CakeOrderService {
     @Autowired
     private CakeOrderRepository cakeOrderRepository;
 
-    public boolean fulfilOrder(Long id) {
-        Optional<CakeOrder> cakeOrder = cakeOrderRepository.findById(id);
-        if (cakeOrder.isPresent()) {
-            cakeOrder.get().fulfilledDate = new Date();
-            cakeOrderRepository.save(cakeOrder.get());
-            return true;
-        } else {
-            return false;
-        }
+    public List<CakeOrder> retrieveAllOrders() {
+        List<CakeOrder> cakeOrders = new ArrayList<CakeOrder>();
+        cakeOrderRepository.findAll().forEach(cakeOrders::add);
+        return cakeOrders;
     }
 
-    public boolean logNewCakeOrder(CakeOrderDto cakeOrderDto) {
+    public void fulfilOrder(Long id) {
+        Optional<CakeOrder> cakeOrder = cakeOrderRepository.findById(id);
+        if (!cakeOrder.isPresent()) {
+            throw new OrderNotFoundException(id);
+        }
+
+        cakeOrder.get().fulfilledDate = new Date();
+        cakeOrderRepository.save(cakeOrder.get());
+    }
+
+    public void logNewCakeOrder(CakeOrderDto cakeOrderDto) {
         try {
             CakeOrder cakeOrder = new CakeOrder(cakeOrderDto);
-            System.out.println(cakeOrder.id);
             cakeOrderRepository.save(cakeOrder);
-            return true;
         } catch (Exception e) {
-            return false;
+            throw new CannotSaveOrderException(e.getMessage());
         }
     }
 

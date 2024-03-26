@@ -9,7 +9,6 @@ import com.bakkerij_van_blom.services.CakeOrderService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,53 +32,24 @@ public class CakeOrderController {
 
     @GetMapping("/all")
     public ResponseEntity<List<CakeOrder>> getAllOrders() {
-        try {
-            List<CakeOrder> cakeOrders = new ArrayList<CakeOrder>();
-            cakeOrderRepository.findAll().forEach(cakeOrders::add);
+        List<CakeOrder> cakeOrders = cakeOrderService.retrieveAllOrders();
 
-            if (cakeOrders.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(cakeOrders, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        if (cakeOrders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+        return new ResponseEntity<>(cakeOrders, HttpStatus.OK);
     }
 
     @PutMapping("/fulfil/{id}")
     public ResponseEntity<String> fulfilCakeOrder(@RequestParam Long id) {
-        try {
-            boolean fulfilCakeOrderResponse = cakeOrderService.fulfilOrder(id);
-
-            if (!fulfilCakeOrderResponse) {
-                return new ResponseEntity<>("Could not find order", HttpStatus.BAD_REQUEST);
-            }
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        cakeOrderService.fulfilOrder(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity<String> logNewCakeOrder(@RequestBody CakeOrderDto cakeOrder) {
-        try {
-            boolean logNewCakeOrderResponse = cakeOrderService.logNewCakeOrder(cakeOrder);
-
-            if (!logNewCakeOrderResponse) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<String> saveNewCakeOrder(@RequestBody CakeOrderDto cakeOrder) {
+        cakeOrderService.logNewCakeOrder(cakeOrder);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-    
-    
-    // @GetMapping("/all")
-    // public Iterable<CakeOrder> getAll() {
-    //     return cakeOrderRepository.findAll();
-    // }
 }
