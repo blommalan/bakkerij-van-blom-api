@@ -26,6 +26,12 @@ public class CakeOrderService {
         return cakeOrders;
     }
 
+    public List<CakeOrder> retrieveOrdersByUser(Long userId) {
+        List<CakeOrder> cakeOrders = new ArrayList<CakeOrder>();
+        cakeOrderRepository.findByUserId(userId).forEach(cakeOrders::add);
+        return cakeOrders;
+    }
+
     public void fulfilOrder(Long id) {
         Optional<CakeOrder> cakeOrder = cakeOrderRepository.findById(id);
         if (!cakeOrder.isPresent()) {

@@ -30,6 +30,17 @@ public class CakeOrderController {
     @Autowired
     CakeOrderService cakeOrderService;
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<CakeOrder>> getOrdersByUserId(@RequestParam Long id) {
+        List<CakeOrder> cakeOrders = cakeOrderService.retrieveOrdersByUser(id);
+
+        if (cakeOrders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(cakeOrders, HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<CakeOrder>> getAllOrders() {
         List<CakeOrder> cakeOrders = cakeOrderService.retrieveAllOrders();
